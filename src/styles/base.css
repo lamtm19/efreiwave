@@ -1,0 +1,570 @@
+/* ===== Global ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f4f4f5;
+  color: #1a1a1a;
+  padding-bottom: 64px; /* réserve de place pour la PlayerBar fixe */
+}
+
+/* ===== Header ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  background: #18181b;
+  color: #fff;
+}
+
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+
+header nav {
+  display: flex;
+  gap: 24px;
+}
+
+header nav a {
+  color: #d4d4d8;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+header nav a:hover {
+  color: #fff;
+}
+
+header nav a.active {
+  color: #fff;
+  font-weight: 700;
+  border-bottom: 2px solid #6366f1;
+  padding-bottom: 2px;
+}
+
+/* ===== Main ===== */
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Titres de pages */
+main > h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 24px;
+  color: #18181b;
+  line-height: 1.2;
+}
+
+main > h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #18181b;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+/* ===== Toolbar : main > div contient SearchBar, GenreFilter, SortSelect, bouton ===== */
+main > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+/* Chaque wrapper de filtre (GenreFilter div, SortSelect div) */
+main > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+main > div label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #52525b;
+}
+
+/* SearchBar : form dans la toolbar */
+main > div > form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+main > div > form > label {
+  width: 100%;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #52525b;
+}
+
+/* Input de recherche */
+#search {
+  padding: 8px 12px;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  width: 220px;
+  background: #fff;
+}
+
+#search:focus {
+  outline: 2px solid #6366f1;
+  border-color: transparent;
+}
+
+/* Bouton ✕ — frère direct de #search */
+#search + button {
+  padding: 8px 10px;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #71717a;
+  line-height: 1;
+}
+
+#search + button:hover {
+  background: #f4f4f5;
+  color: #18181b;
+}
+
+/* Bouton Rechercher */
+form button[type="submit"] {
+  padding: 8px 14px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+form button[type="submit"]:hover {
+  background: #4f46e5;
+}
+
+/* Selects genre et tri */
+#genre,
+#sort {
+  padding: 8px 12px;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+#genre:focus,
+#sort:focus {
+  outline: 2px solid #6366f1;
+  border-color: transparent;
+}
+
+/* Bouton Réinitialiser — enfant direct de main > div */
+main > div > button {
+  padding: 8px 16px;
+  background: #18181b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+main > div > button:hover {
+  background: #3f3f46;
+}
+
+/* ===== Compteur et message aucun résultat ===== */
+main > p {
+  font-size: 0.85rem;
+  color: #71717a;
+  margin: 0 0 16px 0;
+}
+
+/* ===== Grille d'albums ===== */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .album-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .album-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== Carte album (Link → <a>) ===== */
+.album-grid > a {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+
+.album-grid > a:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  transform: translateY(-2px);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.album-grid > a img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* Titre (premier p) */
+.album-grid > a p:first-of-type {
+  margin: 10px 12px 2px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Artiste (deuxième p) */
+.album-grid > a p:last-of-type {
+  margin: 0 12px 8px;
+  font-size: 0.8rem;
+  color: #71717a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*
+  Badge "E" : span:first-of-type quand il y a 2 spans (badge + trackCount).
+  Quand un seul span existe c'est le trackCount (non-explicit) — pas de badge.
+*/
+.album-grid > a > span:first-of-type:not(:last-of-type) {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+/* Nombre de titres : dernier span (ou seul span quand pas de badge) */
+.album-grid > a > span:last-of-type {
+  display: block;
+  margin: 0 12px 10px;
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+/* ===== Page Album ===== */
+
+/* Bouton ← Retour */
+main > button:first-child {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6366f1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+main > button:first-child:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+/* Layout cover + info côte à côte (via :has) */
+main:has(> img) {
+  display: grid;
+  grid-template-columns: min(280px, 40%) 1fr;
+  column-gap: 32px;
+  align-items: start;
+}
+
+main:has(> img) > button:first-child {
+  grid-column: 1 / -1;
+}
+
+/* Cover : occupe les lignes 2 à 4 de la colonne gauche */
+main:has(> img) > img {
+  grid-row: 2 / 5;
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+main:has(> img) > h1 {
+  align-self: end;
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+}
+
+/* Override main > p pour le sous-titre artist — year */
+main:has(> img) > p {
+  font-size: 1rem;
+  color: #52525b;
+  margin: 0;
+}
+
+main:has(> img) > p a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+main:has(> img) > p a:hover {
+  text-decoration: underline;
+}
+
+/* Liste pistes sous la cover */
+main:has(> img) > ol {
+  grid-column: 1 / -1;
+  margin-top: 32px;
+}
+
+/* Mobile : empilé */
+@media (max-width: 639px) {
+  main:has(> img) {
+    display: block;
+  }
+
+  main:has(> img) > img {
+    width: min(240px, 80%);
+    margin: 0 auto 20px;
+    display: block;
+  }
+}
+
+/* ===== Liste de pistes (AlbumPage & Profile) ===== */
+main > ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e4e4e7;
+}
+
+main > ol li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #fff;
+  border-bottom: 1px solid #e4e4e7;
+  min-height: 48px;
+}
+
+main > ol li:last-child {
+  border-bottom: none;
+}
+
+/* Rangées alternées */
+main > ol li:nth-child(even) {
+  background: #fafafa;
+}
+
+/* Boutons ▶ et ❤️ */
+main > ol li > button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  font-size: 1rem;
+  line-height: 1;
+  color: #6366f1;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+main > ol li > button:hover {
+  background: #ede9fe;
+}
+
+/* Premier span : numéro + titre (AlbumPage) ou titre (Profile) */
+main > ol li > span:first-of-type {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* Deuxième span uniquement dans Profile (artiste) */
+main > ol li > span:nth-of-type(2):not(:last-of-type) {
+  font-size: 0.82rem;
+  color: #71717a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  flex-shrink: 0;
+}
+
+/* Dernier span : durée */
+main > ol li > span:last-of-type {
+  font-size: 0.82rem;
+  color: #71717a;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Page 404 ===== */
+/*
+  NotFound rend un <div> sans classe, directement après <header> dans le flux.
+  Les autres pages utilisent <main>, la PlayerBar a .player-bar.
+*/
+header + div:not([class]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px - 64px);
+  text-align: center;
+  gap: 20px;
+  padding: 24px;
+}
+
+header + div:not([class]) h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #18181b;
+  margin: 0;
+}
+
+header + div:not([class]) a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 24px;
+  border: 2px solid #6366f1;
+  border-radius: 8px;
+}
+
+header + div:not([class]) a:hover {
+  background: #6366f1;
+  color: #fff;
+}
+
+/* ===== PlayerBar ===== */
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  height: 64px;
+  background: #18181b;
+  color: #fff;
+  border-top: 2px solid #6366f1;
+}
+
+.player-bar img {
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.player-bar > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-bar > div p {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-bar > div p:first-child {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.player-bar > div p:last-child {
+  font-size: 0.78rem;
+  color: #a1a1aa;
+}
+
+.player-bar > button {
+  background: none;
+  border: 2px solid #6366f1;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.player-bar > button:hover {
+  background: #6366f1;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 16px 24px;
+  font-size: 0.8rem;
+  color: #71717a;
+  border-top: 1px solid #e4e4e7;
+  background: #fff;
+}
